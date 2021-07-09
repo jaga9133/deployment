@@ -1,0 +1,15 @@
+pipeline{
+    agent any
+    stages{
+        stage("download"){
+            steps{
+            sh 'wget --user=jaga --password=jaga http://18.119.117.224:8081/nexus/service/local/repositories/jaga/content/java/wwp/1.0.1/wwp-1.0.1.war'
+            }
+        }
+        stage("tomcat push"){
+            steps{
+            deploy adapters: [tomcat7(credentialsId: 'tomcat-jaga', path: '', url: 'http://18.223.99.8:8080/')], contextPath: 'lmn', war: '**/*.war'
+            }
+        }
+    }
+}
